@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Friends Management — Prototype</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="prototype-banner">
+      <span><span class="prototype-tag">PROTOTYPE</span> Screen 2: Friends Management</span>
+      <a href="index.html" style="color: inherit; text-decoration: underline;">Back to Overview</a>
+    </div>
+
+    <header class="page-header">
+      <h1>Friends List</h1>
+      <p class="subtitle">Add friends by name with no user accounts required (User Story 1).</p>
+    </header>
+
+    <nav class="nav-bar">
+      <a href="index.html" class="nav-link">🏠 Overview & Expenses</a>
+      <a href="friends.html" class="nav-link active">👥 Friends List</a>
+      <a href="add-expense.html" class="nav-link">➕ Record Expense</a>
+      <a href="by-person.html" class="nav-link">👤 By Person</a>
+      <a href="settle.html" class="nav-link">🤝 Settle Up</a>
+    </nav>
+
+    <!-- Add Friend Card -->
+    <div class="card">
+      <h2>Add a Friend</h2>
+      <form onsubmit="event.preventDefault(); alert('Prototype: Added ' + document.getElementById('name').value); location.reload();">
+        <div class="row">
+          <div style="flex: 1;">
+            <label for="name">Friend Name</label>
+            <input type="text" id="name" placeholder="Enter name (e.g. David)" required>
+          </div>
+          <div style="align-self: flex-end;">
+            <button type="submit" class="btn">Add Friend</button>
+          </div>
+        </div>
+        <p class="hint">Duplicate and blank names are rejected. No login accounts needed.</p>
+      </form>
+    </div>
+
+    <!-- Friends List Card -->
+    <div class="card">
+      <h2>Current Friends on Trip (Sample Data)</h2>
+      <ul class="list-group">
+        <li class="list-item">
+          <div>
+            <strong>Asha</strong>
+            <span class="badge" style="margin-left: 0.5rem;">ID: 1</span>
+          </div>
+          <div class="actions-row">
+            <button class="btn btn-secondary btn-sm" onclick="prompt('Rename Asha to:', 'Asha')">Rename</button>
+            <button class="btn btn-danger btn-sm" onclick="alert('Prototype: Remove Asha')">Remove</button>
+          </div>
+        </li>
+        <li class="list-item">
+          <div>
+            <strong>Ben</strong>
+            <span class="badge" style="margin-left: 0.5rem;">ID: 2</span>
+          </div>
+          <div class="actions-row">
+            <button class="btn btn-secondary btn-sm" onclick="prompt('Rename Ben to:', 'Ben')">Rename</button>
+            <button class="btn btn-danger btn-sm" onclick="alert('Prototype: Remove Ben')">Remove</button>
+          </div>
+        </li>
+        <li class="list-item">
+          <div>
+            <strong>Cara</strong>
+            <span class="badge" style="margin-left: 0.5rem;">ID: 3</span>
+          </div>
+          <div class="actions-row">
+            <button class="btn btn-secondary btn-sm" onclick="prompt('Rename Cara to:', 'Cara')">Rename</button>
+            <button class="btn btn-danger btn-sm" onclick="alert('Prototype: Remove Cara')">Remove</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

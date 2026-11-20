@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Settle Up — Prototype</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="prototype-banner">
+      <span><span class="prototype-tag">PROTOTYPE</span> Screen 5: Settle & Start Over</span>
+      <a href="index.html" style="color: inherit; text-decoration: underline;">Back to Overview</a>
+    </div>
+
+    <header class="page-header">
+      <h1>Settle Balances</h1>
+      <p class="subtitle">End of trip settle view: see exactly what each friend owes you (Stories 7 & 8).</p>
+    </header>
+
+    <nav class="nav-bar">
+      <a href="index.html" class="nav-link">🏠 Overview & Expenses</a>
+      <a href="friends.html" class="nav-link">👥 Friends List</a>
+      <a href="add-expense.html" class="nav-link">➕ Record Expense</a>
+      <a href="by-person.html" class="nav-link">👤 By Person</a>
+      <a href="settle.html" class="nav-link active">🤝 Settle Up</a>
+    </nav>
+
+    <!-- Settle Results Card -->
+    <div class="card">
+      <h2>Settle Summary (PRD Worked Example)</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Friend</th>
+            <th>Amount Owed to Organizer</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Asha</strong></td>
+            <td><strong style="color: #2563eb; font-size: 1.1rem;">$62.50</strong></td>
+            <td><span class="badge">Pending</span></td>
+          </tr>
+          <tr>
+            <td><strong>Ben</strong></td>
+            <td><strong style="color: #2563eb; font-size: 1.1rem;">$62.50</strong></td>
+            <td><span class="badge">Pending</span></td>
+          </tr>
+          <tr>
+            <td><strong>Cara</strong></td>
+            <td><strong style="color: #2563eb; font-size: 1.1rem;">$47.50</strong></td>
+            <td><span class="badge">Pending</span></td>
+          </tr>
+          <tr style="background: #f8fafc;">
+            <td><em>Organizer Own Cost (Your share)</em></td>
+            <td colspan="2">$87.50 <em>(Not a debt)</em></td>
+          </tr>
+          <tr style="background: #eff6ff; font-weight: bold;">
+            <td>Total Trip Cost</td>
+            <td colspan="2">$260.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Start Over Card -->
+    <div class="card" style="border-color: #fecaca; background: #fff5f5;">
+      <h2 style="color: #b91c1c;">Start Over (Clear Trip)</h2>
+      <p style="color: #7f1d1d; margin-bottom: 1rem;">
+        Clear the current trip back to an empty state so you can start a new trip (User Story 8).
+      </p>
+      <button class="btn btn-danger" onclick="if(confirm('Clear every friend and expense on this trip?')) { alert('Trip cleared!'); window.location.href='index.html'; }">
+        Start Over (Clear Trip)
+      </button>
+    </div>
+  </div>
+</body>
+</html>

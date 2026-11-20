@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trip Expense Tracker — SplitTrip Pro</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <!-- Top Navigation / App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">✈️</div>
+        <div>
+          <h1 class="brand-title">Trip Expense Tracker <span class="badge-pro">PRO</span></h1>
+          <p class="brand-subtitle">Smart Group Expense Splitting with SQLite</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Trip Selector Dropdown -->
+        <div class="trip-selector-wrapper">
+          <label for="trip-select" class="sr-only">Active Trip</label>
+          <select id="trip-select" class="trip-dropdown" aria-label="Select active trip">
+            <!-- Populated via JS -->
+          </select>
+          <button type="button" id="btn-new-trip" class="btn btn-sm btn-outline" title="Create a new trip">➕ New Trip</button>
+          <button type="button" id="btn-edit-trip" class="btn btn-sm btn-icon" title="Trip settings">⚙️</button>
+        </div>
+
+        <!-- Export & Share Buttons -->
+        <div class="export-actions">
+          <button type="button" id="btn-share-whatsapp" class="btn btn-sm btn-whatsapp" title="Share settle summary on WhatsApp">
+            💬 Share
+          </button>
+          <button type="button" id="btn-export-csv" class="btn btn-sm btn-outline" title="Export expenses to CSV">
+            📥 CSV
+          </button>
+          <button type="button" id="theme-toggle" class="btn btn-sm btn-icon" title="Toggle dark/light mode">
+            🌓
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-main">
+    <!-- Top Hero Stats Cards -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">Total Trip Spend</span>
+        <div class="stat-value" id="stat-total-spend">$0.00</div>
+        <span class="stat-sub" id="stat-expense-count">0 expenses</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Your Net Balance</span>
+        <div class="stat-value" id="stat-user-balance">$0.00</div>
+        <span class="stat-sub" id="stat-user-status">All settled up</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Group Members</span>
+        <div class="stat-value" id="stat-people-count">1</div>
+        <span class="stat-sub">Organizer + Friends</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Settlement Status</span>
+        <div class="stat-value" id="stat-settle-status">✅ Settled</div>
+        <span class="stat-sub" id="stat-pending-debts">No pending debts</span>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <nav class="tab-nav" aria-label="Sections">
+      <button type="button" class="tab-btn active" data-tab="tab-expenses">
+        💳 Expenses
+      </button>
+      <button type="button" class="tab-btn" data-tab="tab-people">
+        👥 People & Shares
+      </button>
+      <button type="button" class="tab-btn" data-tab="tab-settle">
+        🤝 Settle & Debts
+      </button>
+      <button type="button" class="tab-btn" data-tab="tab-analytics">
+        📊 Analytics & Charts
+      </button>
+    </nav>
+
+    <!-- TAB 1: EXPENSES -->
+    <section id="tab-expenses" class="tab-panel active">
+      <div class="toolbar">
+        <div class="search-box">
+          <input type="text" id="expense-search" placeholder="🔍 Search expenses, notes..." autocomplete="off">
+        </div>
+        <div class="filter-box">
+          <select id="expense-cat-filter" class="select-sm">
+            <option value="">All Categories</option>
+            <!-- Populated via JS -->
+          </select>
+        </div>
+        <button type="button" id="btn-open-add-expense" class="btn btn-primary">
+          ➕ Add Expense
+        </button>
+      </div>
+
+      <!-- Quick Add inline form for PRD / test compatibility -->
+      <section class="card quick-add-card" id="quick-expense-section">
+        <h2 id="expenses-heading">Add Expense</h2>
+        <form id="expense-form">
+          <div class="fields">
+            <div>
+              <label for="expense-date">Date</label>
+              <input id="expense-date" name="date" type="date" required>
+            </div>
+            <div>
+              <label for="expense-amount">Amount (<span class="currency-symbol">$</span>)</label>
+              <input id="expense-amount" name="amount" inputmode="decimal" placeholder="0.00" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="expense-description">Description</label>
+            <input id="expense-description" name="description" maxlength="80" placeholder="e.g. Dinner, Fuel, Museum tickets" required>
+          </div>
+
+          <div class="fields">
+            <div>
+              <label for="expense-payer">Paid by</label>
+              <select id="expense-payer" name="payer_id">
+                <option value="0">You (Organizer)</option>
+                <!-- Populated via JS -->
+              </select>
+            </div>
+            <div>
+              <label for="expense-category">Category</label>
+              <select id="expense-category" name="category_id">
+                <!-- Populated via JS -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Split Mode Selector -->
+          <div class="form-group split-mode-group">
+            <label>Split Type</label>
+            <div class="split-mode-radios">
+              <label><input type="radio" name="split_type" value="equal" checked> Equal</label>
+              <label><input type="radio" name="split_type" value="exact"> Exact ($)</label>
+              <label><input type="radio" name="split_type" value="percent"> Percent (%)</label>
+              <label><input type="radio" name="split_type" value="shares"> Shares (Weights)</label>
+            </div>
+          </div>
+
+          <fieldset>
+            <legend>Friends who shared this</legend>
+            <div id="friend-checks" class="checks"></div>
+          </fieldset>
+
+          <!-- Custom Split Inputs Container (visible for exact, percent, shares) -->
+          <div id="custom-splits-container" class="custom-splits-wrapper" hidden>
+            <h4>Customize Shares</h4>
+            <div id="custom-splits-fields" class="custom-splits-fields"></div>
+            <p id="split-difference-hint" class="hint"></p>
+          </div>
+
+          <p class="hint">You are included on every expense by default. Leftover cents remain with the organizer/payer.</p>
+          <div class="row">
+            <button type="submit" id="expense-submit" class="btn btn-primary">Add expense</button>
+            <button type="button" id="expense-cancel" class="btn btn-secondary" hidden>Cancel edit</button>
+          </div>
+          <p id="expense-error" class="error" hidden></p>
+        </form>
+      </section>
+
+      <!-- Expense List -->
+      <section class="card">
+        <div class="card-header-row">
+          <h2>Expenses List</h2>
+          <span id="expense-filter-stats" class="badge"></span>
+        </div>
+        <ul id="expense-list" class="stack"></ul>
+        <div id="no-expenses-message" class="empty-state" hidden>
+          <p>No expenses recorded yet. Click <strong>Add Expense</strong> to get started!</p>
+        </div>
+      </section>
+    </section>
+
+    <!-- TAB 2: PEOPLE & SHARES -->
+    <section id="tab-people" class="tab-panel">
+      <div class="two-column-grid">
+        <!-- Friends List & Add Form -->
+        <section class="card" aria-labelledby="friends-heading">
+          <h2 id="friends-heading">Friends</h2>
+          <form id="friend-form">
+            <label for="friend-name">Friend Name</label>
+            <div class="row">
+              <input id="friend-name" name="name" maxlength="40" placeholder="e.g. Asha, Ben, Cara" autocomplete="off" required>
+              <button type="submit" class="btn btn-primary">Add friend</button>
+            </div>
+            <p id="friend-error" class="error" hidden></p>
+          </form>
+          <ul id="friend-list" class="stack"></ul>
+        </section>
+
+        <!-- Expenses by Person View -->
+        <section class="card" aria-labelledby="people-heading">
+          <h2 id="people-heading">Expenses by person</h2>
+          <div id="people" class="people-breakdown"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- TAB 3: SETTLE & DEBTS -->
+    <section id="tab-settle" class="tab-panel">
+      <div class="card" aria-labelledby="settle-heading">
+        <div class="card-header-row">
+          <h2 id="settle-heading">Settle</h2>
+          <div class="row">
+            <button type="button" id="settle-button" class="btn btn-primary">Refresh Settle</button>
+            <button type="button" id="btn-record-payment" class="btn btn-outline">Record Payment</button>
+            <button type="button" id="start-over" class="btn btn-danger">Start over</button>
+          </div>
+        </div>
+
+        <div id="start-over-confirm" class="confirm" hidden>
+          <p>Clear every friend and expense on this trip?</p>
+          <div class="row">
+            <button type="button" id="confirm-clear" class="btn btn-danger">Clear trip</button>
+            <button type="button" id="cancel-clear" class="btn btn-secondary">Cancel</button>
+          </div>
+        </div>
+        <p id="trip-error" class="error" hidden></p>
+
+        <!-- PRD Settle Results -->
+        <div id="settle-result"></div>
+
+        <!-- Smart Simplified Debts -->
+        <div class="simplified-debts-section">
+          <h3>⚡ Smart Debt Simplification (Min Transfers)</h3>
+          <p class="hint">The shortest path of direct repayments to settle all balances with the fewest payments.</p>
+          <div id="simplified-debts-list" class="debt-cards-grid"></div>
+        </div>
+
+        <!-- Net Balances Breakdown -->
+        <div class="balances-section">
+          <h3>💰 Complete Net Balances</h3>
+          <div id="net-balances-table" class="balances-table-container"></div>
+        </div>
+
+        <!-- Recorded Settlement Payments History -->
+        <div class="settlements-history-section">
+          <h3>📝 Recorded Payments & Settle-ups</h3>
+          <div id="settlements-history-list" class="settlements-history-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: ANALYTICS & CHARTS -->
+    <section id="tab-analytics" class="tab-panel">
+      <div class="analytics-grid">
+        <!-- Category Donut Chart Card -->
+        <div class="card chart-card">
+          <h3>🍩 Spending by Category</h3>
+          <div class="chart-wrapper">
+            <div id="category-donut-chart" class="svg-chart-container"></div>
+            <div id="category-legend" class="chart-legend"></div>
+          </div>
+        </div>
+
+        <!-- Timeline Daily Spending Card -->
+        <div class="card chart-card">
+          <h3>📅 Spending Timeline</h3>
+          <div id="timeline-chart" class="timeline-bar-chart"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: CREATE / EDIT TRIP -->
+  <dialog id="modal-trip" class="app-modal">
+    <form id="trip-form" method="dialog">
+      <h3 id="modal-trip-title">Create New Trip</h3>
+      <div class="form-group">
+        <label for="trip-name">Trip Name</label>
+        <input type="text" id="trip-name" required placeholder="e.g. Paris Weekend, Goa Trip 2026">
+      </div>
+      <div class="fields">
+        <div>
+          <label for="trip-currency-symbol">Currency Symbol</label>
+          <input type="text" id="trip-currency-symbol" maxlength="5" value="$" placeholder="$">
+        </div>
+        <div>
+          <label for="trip-currency-code">Currency Code</label>
+          <input type="text" id="trip-currency-code" maxlength="5" value="USD" placeholder="USD">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="trip-organizer-name">Your Display Name</label>
+        <input type="text" id="trip-organizer-name" value="You (Organizer)">
+      </div>
+      <div class="form-group">
+        <label for="trip-notes">Notes (optional)</label>
+        <textarea id="trip-notes" rows="2" placeholder="Trip description, itinerary links..."></textarea>
+      </div>
+      <p id="trip-modal-error" class="error" hidden></p>
+      <div class="modal-actions">
+        <button type="submit" id="trip-modal-save" class="btn btn-primary">Save Trip</button>
+        <button type="button" id="trip-modal-close" class="btn btn-secondary">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- MODAL: RECORD PAYMENT -->
+  <dialog id="modal-payment" class="app-modal">
+    <form id="payment-form" method="dialog">
+      <h3>Record Settlement Payment</h3>
+      <p class="hint">Log a cash, Venmo, Zelle, or UPI payment between two group members.</p>
+      <div class="fields">
+        <div>
+          <label for="payment-from">Payer (Who paid)</label>
+          <select id="payment-from" required></select>
+        </div>
+        <div>
+          <label for="payment-to">Recipient (Who received)</label>
+          <select id="payment-to" required></select>
+        </div>
+      </div>
+      <div class="fields">
+        <div>
+          <label for="payment-amount">Amount (<span class="currency-symbol">$</span>)</label>
+          <input type="text" id="payment-amount" inputmode="decimal" placeholder="0.00" required>
+        </div>
+        <div>
+          <label for="payment-date">Date</label>
+          <input type="date" id="payment-date" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="payment-note">Payment Note (optional)</label>
+        <input type="text" id="payment-note" placeholder="e.g. Venmo / UPI transfer, cash handed">
+      </div>
+      <p id="payment-modal-error" class="error" hidden></p>
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-primary">Record Payment</button>
+        <button type="button" id="payment-modal-close" class="btn btn-secondary">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

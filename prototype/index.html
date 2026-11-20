@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Trip Expense Tracker — Prototype</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="prototype-banner">
+      <span><span class="prototype-tag">PROTOTYPE</span> Clickable UI Prototype for PRD validation.</span>
+      <span>Double-click friendly (No backend required)</span>
+    </div>
+
+    <header class="page-header">
+      <h1>Trip Expense Tracker</h1>
+      <p class="subtitle">One organizer records shared bills and settles balances at the end of the trip.</p>
+    </header>
+
+    <nav class="nav-bar">
+      <a href="index.html" class="nav-link active">🏠 Overview & Expenses</a>
+      <a href="friends.html" class="nav-link">👥 Friends List</a>
+      <a href="add-expense.html" class="nav-link">➕ Record Expense</a>
+      <a href="by-person.html" class="nav-link">👤 By Person</a>
+      <a href="settle.html" class="nav-link">🤝 Settle Up</a>
+    </nav>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>Current Trip Summary</h2>
+        <a href="add-expense.html" class="btn">+ Record Expense</a>
+      </div>
+      <p><strong>Organizer:</strong> You (included in all expenses automatically)</p>
+      <p><strong>Friends in Trip:</strong> Asha, Ben, Cara (<a href="friends.html">Manage friends</a>)</p>
+      <p><strong>Total Trip Spending:</strong> $260.00</p>
+    </div>
+
+    <div class="card">
+      <h2>Recorded Expenses (Sample Data)</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Total Amount</th>
+            <th>Shared By</th>
+            <th>Each Friend Owes</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2026-11-20</td>
+            <td>Dinner</td>
+            <td>$120.00</td>
+            <td>Organizer + Asha, Ben</td>
+            <td>$40.00</td>
+            <td>
+              <button class="btn btn-secondary btn-sm" onclick="alert('Prototype: Edit expense modal')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="alert('Prototype: Delete expense')">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>2026-11-20</td>
+            <td>Snacks</td>
+            <td>$50.00</td>
+            <td>Organizer + Cara</td>
+            <td>$25.00</td>
+            <td>
+              <button class="btn btn-secondary btn-sm" onclick="alert('Prototype: Edit expense modal')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="alert('Prototype: Delete expense')">Delete</button>
+            </td>
+          </tr>
+          <tr>
+            <td>2026-11-21</td>
+            <td>Taxi</td>
+            <td>$90.00</td>
+            <td>Organizer + Asha, Ben, Cara</td>
+            <td>$22.50</td>
+            <td>
+              <button class="btn btn-secondary btn-sm" onclick="alert('Prototype: Edit expense modal')">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="alert('Prototype: Delete expense')">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top: 1.5rem; text-align: right;">
+        <a href="settle.html" class="btn">View Settle Balances ➔</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

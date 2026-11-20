@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Record Expense — Prototype</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="prototype-banner">
+      <span><span class="prototype-tag">PROTOTYPE</span> Screen 3: Record Expense Form</span>
+      <a href="index.html" style="color: inherit; text-decoration: underline;">Back to Overview</a>
+    </div>
+
+    <header class="page-header">
+      <h1>Record an Expense</h1>
+      <p class="subtitle">Enter bill details and select which friends shared it (Stories 2, 3, 4, 5).</p>
+    </header>
+
+    <nav class="nav-bar">
+      <a href="index.html" class="nav-link">🏠 Overview & Expenses</a>
+      <a href="friends.html" class="nav-link">👥 Friends List</a>
+      <a href="add-expense.html" class="nav-link active">➕ Record Expense</a>
+      <a href="by-person.html" class="nav-link">👤 By Person</a>
+      <a href="settle.html" class="nav-link">🤝 Settle Up</a>
+    </nav>
+
+    <div class="card">
+      <h2>New Expense Details</h2>
+      <form onsubmit="event.preventDefault(); alert('Prototype: Expense saved! Redirecting to Overview.'); window.location.href='index.html';">
+        <div class="row">
+          <div class="form-group" style="flex: 1;">
+            <label for="date">Expense Date</label>
+            <input type="date" id="date" value="2026-11-20" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label for="amount">Total Amount ($)</label>
+            <input type="number" id="amount" step="0.01" min="0.01" placeholder="120.00" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="desc">Description</label>
+          <input type="text" id="desc" placeholder="e.g. Dinner, Taxi, Museum passes" required>
+        </div>
+
+        <div class="form-group">
+          <label>Friends who shared this bill (subset selection):</label>
+          <div style="background: #f8fafc; padding: 1rem; border: 1px solid var(--border); border-radius: 6px;">
+            <div style="margin-bottom: 0.5rem;">
+              <label style="display: inline; font-weight: normal;">
+                <input type="checkbox" checked> <strong>Asha</strong>
+              </label>
+            </div>
+            <div style="margin-bottom: 0.5rem;">
+              <label style="display: inline; font-weight: normal;">
+                <input type="checkbox" checked> <strong>Ben</strong>
+              </label>
+            </div>
+            <div>
+              <label style="display: inline; font-weight: normal;">
+                <input type="checkbox"> <strong>Cara</strong>
+              </label>
+            </div>
+          </div>
+          <p class="hint">Organizer is always included. Example: Dinner ($120) with Asha & Ben divides 3 ways = $40 each.</p>
+        </div>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+          <button type="submit" class="btn">Save & Split Expense</button>
+          <a href="index.html" class="btn btn-secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

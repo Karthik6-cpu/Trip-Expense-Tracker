@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest / Cache
+.pytest_cache/
+pytest-cache*
+
+# Cloudflared / Tunnel binaries & logs
+cloudflared.exe
+tunnel.log
+
+# Temporary files
+*.tmp
+
+# SQLite database (optional: keep or ignore local test db)
+data/*.tmp
